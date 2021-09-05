@@ -1,16 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styles from './List.module.scss';
+import * as actionCreators from '../../actions/actionCreators';
 
-function List({tasks, setTodos}) {
+function List(props) {
+    const {deleteTodo, tasks} = props;
     // Creates a list of tasks
     const createListOfTasks  = (task, index) => {
-
-        // Deletes a specific task
+        console.log('task', task);
         const deleteTask = () => {
-            tasks.splice(index, 1);
-            setTodos(tasks => [...tasks]);
+            deleteTodo(index);
         }
-
         return (
             // Task markup
             <li key={index}>
@@ -22,7 +22,7 @@ function List({tasks, setTodos}) {
     }
     
     return (
-        <section className={styles['list']}>
+        <section className={styles.list}>
             <ul>
                 {tasks.map(createListOfTasks)}
             </ul>
@@ -30,4 +30,18 @@ function List({tasks, setTodos}) {
     )
 }
 
-export default List;
+const mapStateToProps = (state) => {
+   return {
+        tasks: state.tasks,
+   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        deleteTodo: (index) => {
+            dispatch(actionCreators.deleteTodo(index));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

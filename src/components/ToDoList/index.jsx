@@ -1,24 +1,29 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import * as actionCreators from './../../actions/actionCreators'
 import ToDoForm from '../forms/TodoForm';
 import List from '../List';
 import styles from './ToDoList.module.scss';
 
-function ToDoList() {
-    const [tasks, setTodos] = useState([]);
-    const initialValues = {todo: ''}
-    const addTask = (values, formikBag) => {
-        formikBag.resetForm();
-        setTodos(tasks => [...tasks, values])
-    };
-
+function ToDoList({addTask, tasks}) {
+    console.log(tasks);
     return (
         // Todo list markup
         <article className={styles.todolist}>
             <h1 className={styles.todolistHeader}>Todos ({tasks.length})</h1>
-            <ToDoForm initialValues={initialValues} addTask={addTask}/>
-            <List tasks={tasks} setTodos={setTodos}/>
+            <ToDoForm addTask={addTask}/>
+            <List/>
         </article>
     )
 }
 
-export default ToDoList;
+const mapStateToProps = (state) => ({
+    tasks: state.tasks,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    addTask: (values) => dispatch(actionCreators.addTask(values))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDoList);

@@ -4,7 +4,9 @@ import Schema from './../../../validation/validationSchemas';
 import styles from './TodoForm.module.scss';
 import classNames from 'classnames';
 
-function ToDoForm({initialValues, addTask}) {
+function ToDoForm({addTask}) {
+    const initialValues = {todo: ''}
+
     return (
         <Formik initialValues={initialValues} 
             validationSchema={Schema.todoInput} 
